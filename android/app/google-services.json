@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "774473022313",
+    "project_id": "fir-messering",
+    "storage_bucket": "fir-messering.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774473022313:android:2d1e57938c53b48ffddbf8",
+        "android_client_info": {
+          "package_name": "com.example.movie_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "774473022313-2g5frhhs035ekc6nof3aqhv88dsmje6b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKu82farMrUfJiR7HBAlF8_NXAQ4PfH70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "774473022313-2g5frhhs035ekc6nof3aqhv88dsmje6b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
