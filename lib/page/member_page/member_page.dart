@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:movie_app/commond/commond.dart';
 import 'package:movie_app/commond/commond_appbar.dart';
 import 'package:movie_app/commond/commond_local_store.dart';
@@ -14,9 +17,9 @@ class MemberPage extends StatefulWidget {
 }
 
 class _MemberPageState extends State<MemberPage> {
+  File? imageFile;
   String name = "User";
   String id = "000xxxx00000";
-  // bool isLogin = false;
   String image = "";
 
   @override
@@ -35,6 +38,33 @@ class _MemberPageState extends State<MemberPage> {
       image;
       // isLogin = true;
     });
+  }
+
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      // maxWidth: 1800,
+      // maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  /// Get from Camera
+  _getFromCamera() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      // maxWidth: 1800,
+      // maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
   }
 
   List<InforUser> listInforUser = [
@@ -58,34 +88,209 @@ class _MemberPageState extends State<MemberPage> {
           child: Column(
             children: [
               SizedBox(
-                child: CircleAvatar(
-                    radius: 40.0,
-                    backgroundColor: Colors.white,
-                    child: image != ""
-                        ? CircleAvatar(
-                            radius: 38.s,
-                            backgroundImage: NetworkImage(
-                              image,
-                            ),
-                          )
-                        : const CircleAvatar(
-                            radius: 38.0,
-                            backgroundImage: AssetImage(
-                                'assets/images2/image_avatar_defaul.png'),
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 12.0,
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  size: 15.0,
-                                  color: Color(0xFF404040),
+                  child: CircleAvatar(
+                radius: 40.0,
+                backgroundColor: Colors.white,
+                child: image != ""
+                    ? CircleAvatar(
+                        radius: 38.s,
+                        backgroundImage: NetworkImage(
+                          image,
+                        ),
+                      )
+                    : imageFile == null
+                        ? GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return FractionallySizedBox(
+                                    widthFactor: 0.9,
+                                    child: Material(
+                                      type: MaterialType.transparency,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    _getFromGallery();
+                                                  },
+                                                  child: const Text(
+                                                      "Chọn từ thư viện"),
+                                                ),
+                                                Divider(
+                                                  height: 2.s,
+                                                  color:
+                                                      CommondColor.blackCommond,
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    _getFromCamera();
+                                                  },
+                                                  child: const Text(
+                                                      "Chụp từ máy ảnh"),
+                                                ),
+                                                Divider(
+                                                  height: 2.s,
+                                                  color:
+                                                      CommondColor.blackCommond,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                            child: TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                "Hủy bỏ",
+                                                style: TextStyle(
+                                                    color: CommondColor
+                                                        .blackCommond),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 40,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: const CircleAvatar(
+                              radius: 38,
+                              backgroundImage: AssetImage(
+                                  'assets/images2/image_avatar_defaul.png'),
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 12.0,
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    size: 15.0,
+                                    color: Color(0xFF404040),
+                                  ),
                                 ),
                               ),
                             ),
-                          )),
-              ),
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return FractionallySizedBox(
+                                    widthFactor: 0.9,
+                                    child: Material(
+                                      type: MaterialType.transparency,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    _getFromGallery();
+                                                  },
+                                                  child: const Text(
+                                                      "Chọn từ thư viện"),
+                                                ),
+                                                Divider(
+                                                  height: 2.s,
+                                                  color:
+                                                      CommondColor.blackCommond,
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    _getFromCamera();
+                                                  },
+                                                  child: const Text(
+                                                      "Chụp từ máy ảnh"),
+                                                ),
+                                                Divider(
+                                                  height: 2.s,
+                                                  color:
+                                                      CommondColor.blackCommond,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                            child: TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                "Hủy bỏ",
+                                                style: TextStyle(
+                                                    color: CommondColor
+                                                        .blackCommond),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 40,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: ClipOval(
+                              child: Image.file(
+                                width: 80.s,
+                                height: 80.s,
+                                imageFile!,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+              )),
               Text(
                 name,
                 style: CommondText.textSize20W500Black,

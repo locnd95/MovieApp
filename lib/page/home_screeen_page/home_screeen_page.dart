@@ -199,18 +199,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // _getListMovieData({required String idFirm}) async {
-  //   var response = await CommondApi()
-  //       .getData(endPoint: "/api/cinemas/backend/films/$idFirm");
-  //   GetMovieNameResponse getMovieNameResponse = GetMovieNameResponse();
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     getMovieNameResponse = GetMovieNameResponse.fromJson(response.data);
-  //     setState(() {
-  //       print("list Ticket lenght ${getListTicketResponse.items?.length}");
-  //       getListTicketResponse;
-  //     });
-  //   }
-  // }
   _loginAdmin() async {
     LoginResponseApi loginResponseApi = LoginResponseApi();
     var response = await CommondApi().postData(
@@ -336,9 +324,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: pageController,
                     children: [
                       _buildFirstPage(context),
-                      _buildSecondPage(),
-                      _buildThirdPage(context),
-                      _buildPageFour()
+                      _buildPageSecon(),
+                      _buildPageThird(context),
+                      _buildPageFourth()
                     ],
                   ),
                 ),
@@ -348,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
         : _buildLoadingDataScreen();
   }
 
-  Scaffold _buildThirdPage(BuildContext context) {
+  Scaffold _buildPageThird(BuildContext context) {
     return Scaffold(
       backgroundColor: CommondColor.backroundCommond,
       body: SingleChildScrollView(
@@ -511,14 +499,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Consumer<CheckLogin> _buildPageFour() {
+  Consumer<CheckLogin> _buildPageFourth() {
     return Consumer<CheckLogin>(
       builder: (context, value, child) =>
           value.check ? const MemberPage() : const LoginPage(),
     );
   }
 
-  SingleChildScrollView _buildSecondPage() {
+  SingleChildScrollView _buildPageSecon() {
     return SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: ListView.builder(
@@ -673,7 +661,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () => Navigator.pushNamed(
-                                        context, RouterName.circleContent,
+                                        context, RouterName.webViewPage,
                                         arguments: e.list1),
                                     child: _BuildCircleView(
                                       assetLink: e.list1.linkImage,
@@ -684,7 +672,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () => Navigator.pushNamed(
-                                        context, RouterName.circleContent,
+                                        context, RouterName.webViewPage,
                                         arguments: e.list2),
                                     child: _BuildCircleView(
                                       assetLink: e.list2.linkImage,
@@ -1047,19 +1035,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Padding _buildMapSearch() {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.s),
-      child: TextFormField(
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: "Tìm rạp gần bạn...",
-            hintStyle: TextStyle(color: Colors.grey, fontSize: 14.s),
-            suffixIcon: const Icon(
-              Icons.near_me_outlined,
-              color: Colors.grey,
-            )),
-      ),
+  GestureDetector _buildMapSearch() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, RouterName.mapPage);
+      },
+      child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.s, vertical: 8.s),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Tìm rạp gần bạn...",
+                style: TextStyle(color: Colors.grey, fontSize: 14.s),
+              ),
+              const Icon(
+                Icons.near_me_outlined,
+                color: Colors.grey,
+              )
+            ],
+          )
+          // TextFormField(
+          //   decoration: InputDecoration(
+          //       border: InputBorder.none,
+          //       hintText: "Tìm rạp gần bạn...",
+          //       hintStyle: TextStyle(color: Colors.grey, fontSize: 14.s),
+          //       suffixIcon: const Icon(
+          //         Icons.near_me_outlined,
+          //         color: Colors.grey,
+          //       )),
+          // ),
+          ),
     );
   }
 }

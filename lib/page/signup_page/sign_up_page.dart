@@ -3,22 +3,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
-import 'package:movie_app/app.dart';
 import 'package:movie_app/commond/commond.dart';
 import 'package:movie_app/commond/commond_appbar.dart';
-import 'package:movie_app/commond/commond_covert_date_time.dart';
 import 'package:movie_app/commond/commond_large_elevated_button.dart';
-import 'package:movie_app/commond/commond_local_store.dart';
 import 'package:movie_app/commond/commond_text_form_fiel.dart';
 import 'package:movie_app/commond/commond_warning_text.dart';
 import 'package:movie_app/network/api/api_network.dart';
 import 'package:movie_app/network/models/creat_account_request.dart';
-import 'package:movie_app/network/models/login_request_api.dart';
 import 'package:movie_app/network/models/login_respose_api.dart';
 import 'package:movie_app/network/models/movie_data_api.dart';
 import 'package:movie_app/page/infor_user_page/infor_user_page.dart';
 import 'package:movie_app/router/router.dart';
-import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -134,58 +129,6 @@ class _SignUpPageState extends State<SignUpPage> {
       _isLoading = false;
     });
   }
-
-  // onLoginSubmit(
-  //     {required String userNameInput, required String passwordInput}) async {
-  //   final loginRequestApi =
-  //       LoginRequestApi(phoneNumber: userNameInput, password: passwordInput);
-  //   var response = await CommondApi().postData(
-  //       function: () {
-  //         print("Lỗi postData Login");
-  //       },
-  //       dataInput: loginRequestApi,
-  //       endPoint: "/api/cinemas/auth/login");
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     setState(() {
-  //       loginResponseApi;
-  //       _isLoading = false;
-  //     });
-  //     loginResponseApi = LoginResponseApi.fromJson(response.data);
-
-  //     LocalUserCommond.setUserName(
-  //         userName: loginResponseApi.data?.userName ?? "");
-  //     LocalUserCommond.setphoneNumber(
-  //         phoneNumber: loginResponseApi.data?.phoneNumber ?? "");
-  //     LocalUserCommond.setEmail(email: loginResponseApi.data?.email ?? "");
-  //     LocalUserCommond.setPassword(password: passwordController.text);
-  //     LocalUserCommond.setToken(
-  //         token: loginResponseApi.data?.accessToken ?? "");
-  //     LocalUserCommond.setDateOfBirth(
-  //         dateOfBirth: CommondConvertDateTime().getDate(
-  //             loginResponseApi.data?.lastLoginAt ??
-  //                 "2023-01-19T17:09:00.628Z"));
-  //     LocalUserCommond.setGender(gender: genderController.text);
-  //     LocalUserCommond.setLocation(location: locationController.text);
-  //     LocalUserCommond.setFavoritCemina(
-  //         favoriteCimena: favoriteCeminaController.text);
-  //     LocalUserCommond.setId(id: loginResponseApi.data?.id ?? "");
-  //     LocalUserCommond.setImage(image: loginResponseApi.data?.imageUrl ?? "");
-  //     LocalUserCommond.setToken(
-  //         token: loginResponseApi.data?.accessToken ?? "");
-  //     context.read<CheckLogin>().login();
-  //   }
-  // }
-
-  // void getValues() async {
-  //   userController.text = await LocalUserCommond.getUserName();
-  //   phoneNumberController.text = await LocalUserCommond.getphoneNumber();
-  //   emailController.text = await LocalUserCommond.getEmail();
-  //   passwordController.text = await LocalUserCommond.getPassword();
-  //   dateOfBirthController.text = await LocalUserCommond.getDateOfBirth();
-  //   genderController.text = await LocalUserCommond.getGender();
-  //   locationController.text = await LocalUserCommond.getLocation();
-  //   favoriteCeminaController.text = await LocalUserCommond.getFavoritCemina();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -419,22 +362,13 @@ class _SignUpPageState extends State<SignUpPage> {
               ? favoriteCeminaWarningText = "Vui lòng nhập Rạp yêu thích"
               : "";
           if (userWarningText.isEmpty &&
-                  phoneNumberWarningText.isEmpty &&
-                  emailWarningText.isEmpty &&
-                  passwordWarningText.isEmpty &&
-                  dateOfBirthWarningText.isEmpty &&
-                  genderWarningText.isEmpty &&
-                  locationWarningText.isEmpty &&
-                  favoriteCeminaWarningText.isEmpty
-              // userController.text.isNotEmpty &&
-              //   phoneNumberController.text.isNotEmpty &&
-              //   emailController.text.isNotEmpty &&
-              //   passwordController.text.isNotEmpty &&
-              //   dateOfBirthController.text.isNotEmpty &&
-              //   genderController.text.isNotEmpty &&
-              //   locationController.text.isNotEmpty &&
-              //   favoriteCeminaController.text.isNotEmpty
-              ) {
+              phoneNumberWarningText.isEmpty &&
+              emailWarningText.isEmpty &&
+              passwordWarningText.isEmpty &&
+              dateOfBirthWarningText.isEmpty &&
+              genderWarningText.isEmpty &&
+              locationWarningText.isEmpty &&
+              favoriteCeminaWarningText.isEmpty) {
             creatAccount(
                 dateOfBirthInput: dateOfBirthController.text,
                 emailInput: emailController.text,

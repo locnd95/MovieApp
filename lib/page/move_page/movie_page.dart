@@ -2,18 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:movie_app/app.dart';
 import 'package:movie_app/commond/commond.dart';
 import 'package:movie_app/commond/commond_button_show_all_contents.dart';
 import 'package:movie_app/commond/commond_large_elevated_button.dart';
 import 'package:movie_app/network/models/movie_data_api.dart';
-import 'package:movie_app/page/home_screeen_page/data_movie.dart';
 import 'package:movie_app/page/home_screeen_page/home_screeen_page.dart';
 import 'package:movie_app/router/router.dart';
-import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sizer/sizer.dart';
-import 'package:movie_app/network/models/movie_data_api.dart';
 
 class Movie extends StatefulWidget {
   const Movie({

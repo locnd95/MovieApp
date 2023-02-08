@@ -336,82 +336,86 @@ class _InforUserPageState extends State<InforUserPage> {
     return BuildLargeElevatedButton(
       notOTPtype: onChange,
       functionOnTap: () {
-        setState(() {
-          emailController.text.isEmpty
-              ? emailWarningText = "Vui lòng nhập Email"
-              : "";
-          userController.text.isEmpty
-              ? userWarningText = "Vui lòng nhập tên người dùng"
-              : "";
-          phoneNumberController.text.isEmpty
-              ? phoneNumberWarningText = "Vui lòng nhập số điện thoại"
-              : "";
+        onChange
+            ? setState(() {
+                emailController.text.isEmpty
+                    ? emailWarningText = "Vui lòng nhập Email"
+                    : "";
+                userController.text.isEmpty
+                    ? userWarningText = "Vui lòng nhập tên người dùng"
+                    : "";
+                phoneNumberController.text.isEmpty
+                    ? phoneNumberWarningText =
+                        "Vui lòng nhập số điện thoại"
+                    : "";
 
-          dateOfBirthController.text.isEmpty
-              ? dateOfBirthWarningText = "Vui lòng nhập ngày sinh"
-              : "";
-          genderController.text.isEmpty
-              ? genderWarningText = "Vui lòng nhập giới tính"
-              : "";
-          locationController.text.isEmpty
-              ? locationWarningText = "Vui lòng nhập Khu vực"
-              : "";
-          favoriteCeminaController.text.isEmpty
-              ? favoriteCeminaWarningText = "Vui lòng nhập Rạp yêu thích"
-              : "";
+                dateOfBirthController.text.isEmpty
+                    ? dateOfBirthWarningText = "Vui lòng nhập ngày sinh"
+                    : "";
+                genderController.text.isEmpty
+                    ? genderWarningText = "Vui lòng nhập giới tính"
+                    : "";
+                locationController.text.isEmpty
+                    ? locationWarningText = "Vui lòng nhập Khu vực"
+                    : "";
+                favoriteCeminaController.text.isEmpty
+                    ? favoriteCeminaWarningText =
+                        "Vui lòng nhập Rạp yêu thích"
+                    : "";
 
-          if (userController.text.isNotEmpty &&
-              phoneNumberController.text.isNotEmpty &&
-              emailController.text.isNotEmpty &&
-              dateOfBirthController.text.isNotEmpty &&
-              genderController.text.isNotEmpty &&
-              locationController.text.isNotEmpty &&
-              favoriteCeminaController.text.isNotEmpty) {
-            setState(() {
-              _isLoading = true;
-            });
-
-            Future.delayed(const Duration(seconds: 1), () {
-              setState(() {
-                onChange = false;
-                _isLoading = false;
-              });
-              setValues(
-                  userNameInput: userController.text,
-                  emailInput: emailController.text,
-                  dateOfBirthInput: dateOfBirthController.text,
-                  genderInput: genderController.text,
-                  locationInput: locationController.text,
-                  favoriteCimenaInput: favoriteCeminaController.text,
-                  phoneNumberInput: phoneNumberController.text);
-
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return SimpleDialog(
-                      title: Center(
-                        child: Text(
-                          "Thông báo",
-                          style: CommondText.textSize18W500Black,
-                        ),
-                      ),
-                      children: [
-                        Center(
-                          child: Text("Đổi thông tin thành công",
-                              style: CommondText.textSize16W500),
-                        ),
-                        Center(
-                          child: TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text("Đóng",
-                                  style: CommondText.textSize16W500)),
-                        )
-                      ],
-                    );
+                if (userController.text.isNotEmpty &&
+                    phoneNumberController.text.isNotEmpty &&
+                    emailController.text.isNotEmpty &&
+                    dateOfBirthController.text.isNotEmpty &&
+                    genderController.text.isNotEmpty &&
+                    locationController.text.isNotEmpty &&
+                    favoriteCeminaController.text.isNotEmpty) {
+                  setState(() {
+                    _isLoading = true;
                   });
-            });
-          }
-        });
+
+                  Future.delayed(const Duration(seconds: 1), () {
+                    setState(() {
+                      onChange = false;
+                      _isLoading = false;
+                    });
+                    setValues(
+                        userNameInput: userController.text,
+                        emailInput: emailController.text,
+                        dateOfBirthInput: dateOfBirthController.text,
+                        genderInput: genderController.text,
+                        locationInput: locationController.text,
+                        favoriteCimenaInput: favoriteCeminaController.text,
+                        phoneNumberInput: phoneNumberController.text);
+
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SimpleDialog(
+                            title: Center(
+                              child: Text(
+                                "Thông báo",
+                                style: CommondText.textSize18W500Black,
+                              ),
+                            ),
+                            children: [
+                              Center(
+                                child: Text("Đổi thông tin thành công",
+                                    style: CommondText.textSize16W500),
+                              ),
+                              Center(
+                                child: TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text("Đóng",
+                                        style: CommondText.textSize16W500)),
+                              )
+                            ],
+                          );
+                        });
+                  });
+                }
+              })
+            : null;
       },
       text: 'SỬA THÔNG TIN',
     );

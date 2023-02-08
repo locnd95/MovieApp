@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         LocalUserCommond.setphoneNumber(
             phoneNumber: loginResponseApi.data?.phoneNumber ?? "");
         LocalUserCommond.setEmail(email: loginResponseApi.data?.email ?? "");
-        LocalUserCommond.setPassword(password: "123456");
+        LocalUserCommond.setPassword(password: "111111");
         LocalUserCommond.setToken(
             token: loginResponseApi.data?.accessToken ?? "");
         LocalUserCommond.setDateOfBirth(

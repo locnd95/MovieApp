@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/commond/commond.dart';
-import 'package:movie_app/page/home_screeen_page/home_screeen_page.dart';
 import 'package:sizer/sizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewPage extends StatefulWidget {
-  const WebViewPage({super.key});
+class MapPage extends StatefulWidget {
+  const MapPage({super.key});
 
   @override
-  State<WebViewPage> createState() => _WebViewPageState();
+  State<MapPage> createState() => _CineChannelState();
 }
 
-class _WebViewPageState extends State<WebViewPage> {
+class _CineChannelState extends State<MapPage> {
   WebViewController controller = WebViewController();
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as ListAssetInfor;
+    // final data =
+    //     ModalRoute.of(context)!.settings.arguments as AgrumentCineChannel;
+    var s;
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -40,7 +41,7 @@ class _WebViewPageState extends State<WebViewPage> {
                 color: CommondColor.blackCommond,
               ),
             ),
-            title: Text(data.textImage,
+            title: Text("Bản đồ của bạn",
                 style: CommondText.textSize18W600White
                     .copyWith(color: CommondColor.blackCommond)),
             actions: [
@@ -92,7 +93,7 @@ class _WebViewPageState extends State<WebViewPage> {
                         },
                       ),
                     )
-                    ..loadRequest(Uri.parse(data.linkWeb)))),
+                    ..loadRequest(Uri.parse("https://www.google.com/maps")))),
         ),
       ),
     );

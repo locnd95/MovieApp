@@ -14,6 +14,7 @@ import 'package:movie_app/page/forgot_password_page/forgot_password_page.dart';
 import 'package:movie_app/page/gift_voucher_coupon/gift_voucher_coupon.dart';
 import 'package:movie_app/page/history_deal/history_deal.dart';
 import 'package:movie_app/page/home_screeen_page/home_screeen_page.dart';
+import 'package:movie_app/page/home_screeen_page/map_page.dart';
 import 'package:movie_app/page/imax_4dx_page/imax_4dx_page.dart';
 import 'package:movie_app/page/infor_user_page/infor_user_page.dart';
 import 'package:movie_app/page/login_page/login_page.dart';
@@ -75,9 +76,9 @@ class AppRouter {
       case RouterName.cineChannel:
         return MaterialPageRoute(
             builder: (context) => const CineChannel(), settings: settings);
-      case RouterName.circleContent:
+      case RouterName.webViewPage:
         return MaterialPageRoute(
-            builder: (context) => const CircleContent(), settings: settings);
+            builder: (context) => const WebViewPage(), settings: settings);
       case RouterName.termOfUse:
         return MaterialPageRoute(
             builder: (context) => const TermOfUse(), settings: settings);
@@ -128,6 +129,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => const MyTicket(),
         );
+      case RouterName.mapPage:
+        return MaterialPageRoute(
+          builder: (context) => const MapPage(),
+        );
     }
     return null;
   }
@@ -149,7 +154,7 @@ class RouterName {
   static const allDetailContentImage = "/allDetailContentImage";
   static const allVideosContents = "/allVideosContents";
   static const termOfUse = "/termOfUse";
-  static const circleContent = "/circleContent";
+  static const webViewPage = "/webViewPage";
   static const cineChannel = "/cineChannel";
   static const bookingMovieChair = "/bookingMovieChair";
   static const bookingDateTimeOfMovie = "/bookingDateTimeOfMovie";
@@ -163,4 +168,5 @@ class RouterName {
   static const giftVoucherCoupon = "/giftVoucherCoupon";
   static const historyDeal = "/historyDeal";
   static const myTicket = "/myTicket";
+  static const mapPage = "/mapPage";
 }

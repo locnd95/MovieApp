@@ -14,6 +14,7 @@ class LocalUserCommond {
   static const _image = "image";
   static const _token = "token";
   static const _tokenAdmin = "tokenAdmin";
+  // static const _fileImage = "fileImage";
 
   static Future<void> deleteUser() async {
     return await _localUserCommond.deleteAll();
@@ -115,4 +116,12 @@ class LocalUserCommond {
   static Future<void> setTokenAdmin({required String tokenAdmin}) async {
     return await _localUserCommond.write(key: _tokenAdmin, value: tokenAdmin);
   }
+
+  // static Future<String> getFileImage() async {
+  //   return await _localUserCommond.read(key: _fileImage) ?? "";
+  // }
+
+  // static Future<void> setFileImage({required File fileImage}) async {
+  //   return await _localUserCommond.write(key: _fileImage, value: fileImage);
+  // }
 }
