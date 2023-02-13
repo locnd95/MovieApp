@@ -3,21 +3,21 @@ import 'package:movie_app/commond/commond.dart';
 import 'package:sizer/sizer.dart';
 
 class BuildSimpleDialog extends StatelessWidget {
-  const BuildSimpleDialog({
+  BuildSimpleDialog({
     Key? key,
     this.title,
     required this.content,
     required this.firstButtonName,
-    required this.secondButtonName,
+    this.secondButtonName,
     required this.onTapFuncionFirst,
-    required this.onTapFuncionSecond,
+    this.onTapFuncionSecond,
   }) : super(key: key);
   final String? title;
   final String content;
   final String? firstButtonName;
-  final String? secondButtonName;
+  String? secondButtonName;
   final void Function()? onTapFuncionFirst;
-  final void Function()? onTapFuncionSecond;
+  void Function()? onTapFuncionSecond;
 
   @override
   Widget build(BuildContext context) {

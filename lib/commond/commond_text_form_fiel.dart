@@ -13,12 +13,14 @@ class BuildTextFormField extends StatefulWidget {
       this.isObscure = false,
       required this.textController,
       this.radioFuncion,
-      this.readOnly = false})
+      this.readOnly = false,
+      this.prefixIcon})
       : super(key: key);
   final String textNormal;
   final String? textRich;
   final Widget? iconShow;
   final Widget? iconOff;
+  Widget? prefixIcon;
   bool readOnly;
   bool noActive;
   bool isObscure;
@@ -38,6 +40,7 @@ class _BuildTextFormFieldState extends State<BuildTextFormField> {
       obscureText: widget.isObscure,
       maxLines: 1,
       decoration: InputDecoration(
+        prefixIcon: widget.prefixIcon,
         contentPadding: EdgeInsets.only(left: 5.s),
         suffixIcon: widget.iconOff != null
             ? GestureDetector(

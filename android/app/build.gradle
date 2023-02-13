@@ -68,7 +68,23 @@ flutter {
     source '../..'
 }
 
+// dependencies {
+//     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version" 
+//     implementation platform('com.google.firebase:firebase-bom:31.2.0')
+//     implementation 'com.google.firebase:firebase-analytics-ktx'
+// }
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version" 
+  // Import the Firebase BoM
+  implementation platform('com.google.firebase:firebase-bom:31.2.0')
+
+
+  // TODO: Add the dependencies for Firebase products you want to use
+  // When using the BoM, don't specify versions in Firebase dependencies
+  implementation 'com.google.firebase:firebase-analytics-ktx'
+  implementation 'com.google.firebase:firebase-auth-ktx'
+
+
+  // Add the dependencies for any other desired Firebase products
+  // https://firebase.google.com/docs/android/setup#available-libraries
 }

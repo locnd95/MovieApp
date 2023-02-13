@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
@@ -75,8 +74,7 @@ class _MemberPageState extends State<MemberPage> {
     InforUser(content: "Thẻ thành viên", iconData: Icons.card_membership),
     InforUser(content: "Điểm CGV", iconData: Icons.savings),
     InforUser(
-        content: "Thẻ qùa tặng | Voucher | Coupon",
-        iconData: Icons.card_giftcard),
+        content: "Thẻ qùa tặng | Voucher ", iconData: Icons.card_giftcard),
   ];
 
   @override
@@ -225,6 +223,7 @@ class _MemberPageState extends State<MemberPage> {
                                                 TextButton(
                                                   onPressed: () {
                                                     _getFromGallery();
+                                                    Navigator.pop(context);
                                                   },
                                                   child: const Text(
                                                       "Chọn từ thư viện"),
@@ -237,6 +236,7 @@ class _MemberPageState extends State<MemberPage> {
                                                 TextButton(
                                                   onPressed: () {
                                                     _getFromCamera();
+                                                    Navigator.pop(context);
                                                   },
                                                   child: const Text(
                                                       "Chụp từ máy ảnh"),

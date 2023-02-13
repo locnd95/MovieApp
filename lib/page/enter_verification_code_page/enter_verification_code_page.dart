@@ -1,11 +1,13 @@
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:movie_app/commond/commond.dart';
 import 'package:movie_app/commond/commond_appbar.dart';
 import 'package:movie_app/commond/commond_large_elevated_button.dart';
+import 'package:movie_app/commond/commond_show_dialog.dart';
 import 'package:movie_app/commond/commond_warning_text.dart';
+import 'package:movie_app/page/forgot_password_page/forgot_password_page.dart';
 import 'package:movie_app/router/router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
@@ -26,6 +28,43 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
   String otpNumber = "";
   bool sendBack = false;
   int time = 60;
+  bool _isLoading = false;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  confirmOTP(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Create a PhoneAuthCredential with the code
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: ForgotPasswordPage.verify, smsCode: otpNumber);
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Sign the user in (or link) with the credential
+      await auth.signInWithCredential(credential);
+      Navigator.pushNamed(context, RouterName.homeScreen);
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      showDialog(
+          context: context,
+          builder: (context) => BuildSimpleDialog(
+              content: "Mã OTP không đúng",
+              firstButtonName: "Đóng",
+              onTapFuncionFirst: () {
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      "Đóng",
+                      style: CommondText.textSize16W500,
+                    ));
+              }));
+    }
+  }
   // ..text = "123456";
 
   // ignore: close_sinks
@@ -38,60 +77,54 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: const AppBarCommond(
-        titlle: "Nhập mã xác minh",
-        isLeading: true,
-        isBackgroundColor: true,
-      ),
-      //  AppBar(
-      //   leading: GestureDetector(
-      //     onTap: () => Navigator.pop(context),
-      //     child: Icon(
-      //       Icons.arrow_back,
-      //       size: 30.s,
-      //     ),
-      //   ),
-      //   title: Text(
-      //     "Nhập mã xác minh",
-      //     style: CommondText.textSize18W600White
-      //         .copyWith(fontWeight: FontWeight.w400),
-      //   ),
-      // ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.s),
-        child: Column(
-          children: [
-            Gap(30.s),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 30.s),
-              child: _buildTextTittle(),
+        child: Stack(
+      children: [
+        Scaffold(
+          appBar: const AppBarCommond(
+            titlle: "Nhập mã xác minh",
+            isLeading: true,
+            isBackgroundColor: true,
+          ),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.s),
+            child: Column(
+              children: [
+                Gap(30.s),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 30.s),
+                  child: _buildTextTittle(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.s),
+                  child: BuildWarningText(
+                      inputController: userController, text: userWarningText),
+                ),
+                _buildOTPCode(context),
+                Gap(30.s),
+                _buildElevatedButton(context),
+                Gap(10.s),
+                _buildCountdownTime(),
+                Gap(10.s),
+                if (sendBack)
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          sendBack = false;
+                          timeController.restart();
+                        });
+                      },
+                      child: Text("Gửi lại",
+                          style: CommondText.textSize16W500
+                              .copyWith(color: CommondColor.redCommond))),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.s),
-              child: BuildWarningText(
-                  inputController: userController, text: userWarningText),
-            ),
-            _buildOTPCode(context),
-            Gap(30.s),
-            _buildElevatedButton(context),
-            Gap(10.s),
-            _buildCountdownTime(),
-            Gap(10.s),
-            if (sendBack)
-              GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      sendBack = false;
-                      timeController.restart();
-                    });
-                  },
-                  child: Text("Gửi lại",
-                      style: CommondText.textSize16W500
-                          .copyWith(color: CommondColor.redCommond))),
-          ],
+          ),
         ),
-      ),
+        if (_isLoading)
+          Container(
+              color: CommondColor.blackCommond.withOpacity(0.2),
+              child: const Center(child: CircularProgressIndicator())),
+      ],
     ));
   }
 
@@ -101,8 +134,16 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
       seconds: time,
       build: (BuildContext context, double time) => isCheckOTP
           ? const Text("")
-          : Text(
-              "Gửi lại trong : ${time.toInt().toString()} giây",
+          : Text.rich(
+              TextSpan(text: "Gửi lại trong : ",
+                  // style: CommondText.textSize16W500,
+                  children: [
+                    TextSpan(
+                        text: time.toInt().toString(),
+                        style: CommondText.textSize16W500
+                            .copyWith(color: Colors.red)),
+                    const TextSpan(text: " giây"),
+                  ]),
               style: CommondText.textSize16W500,
             ),
       interval: const Duration(seconds: 1),
@@ -139,14 +180,11 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
               if (userController.text.isEmpty) {
                 userWarningText = "Vui lòng nhập mã OTP";
               } else {
-                if (userController.text != "999999") {
-                  userWarningText = 'Mã OTP không đúng';
-                } else {
-                  isCheckOTP = true;
-                  timeController.pause();
-                  userWarningText = "";
-                  Navigator.pushNamed(context, RouterName.testPage);
-                }
+                setState(() {
+                  _isLoading = true;
+                });
+                confirmOTP(context);
+                //
               }
             });
           },

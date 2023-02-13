@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:movie_app/commond/commond.dart';
 import 'package:movie_app/commond/commond_appbar.dart';
 import 'package:movie_app/commond/commond_large_elevated_button.dart';
+import 'package:movie_app/commond/commond_show_dialog.dart';
 import 'package:movie_app/commond/commond_text_form_fiel.dart';
 import 'package:movie_app/commond/commond_warning_text.dart';
 import 'package:movie_app/network/models/get_todo_response.dart';
@@ -12,6 +14,7 @@ import 'package:sizer/sizer.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
+  static String verify = "";
 
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
@@ -24,49 +27,91 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   int total = 30;
   int limit = 30;
   int skip = 0;
+  String phoneInput = "";
   ScrollController controller = ScrollController();
   @override
   initState() {
-    _getTodoList(currentPage: skip);
-    // print()
-    super.initState();
-    controller.addListener(() {
-      if (controller.position.pixels == controller.position.maxScrollExtent) {
-        if ((skip + 1) * limit < total) {
-          setState(() {
-            _isLoadMore = false;
-            skip++;
-          });
-          _getTodoList(currentPage: skip);
-        }
-      }
-    });
-  }
-
-  _getTodoList({required int currentPage}) async {
-    _isLoading = currentPage == 0 ? true : false;
-    _isLoadMore = currentPage > 0 ? true : false;
-
-    Response response;
-    Dio dio = Dio();
-    response = await dio
-        .get('https://dummyjson.com/todos?limit=$limit&skip=$currentPage');
-
-    final GetTodoListResponse getTodoListResponse =
-        GetTodoListResponse.fromJson(response.data);
-    // print(response.data);
-
-    setState(() {
-      listTodo.addAll(getTodoListResponse.todos ?? []);
-      total = getTodoListResponse.total ?? 30;
-      _isLoadMore = false;
-      _isLoading = false;
-    });
-
-    // setState(() {
-    //   _isLoadMore = false;
+    // _getTodoList(currentPage: skip);
+    // // print()
+    // super.initState();
+    // controller.addListener(() {
+    //   if (controller.position.pixels == controller.position.maxScrollExtent) {
+    //     if ((skip + 1) * limit < total) {
+    //       setState(() {
+    //         _isLoadMore = false;
+    //         skip++;
+    //       });
+    //       _getTodoList(currentPage: skip);
+    //     }
+    // //   }
     // });
   }
+
+  requestOTP({required String phoneUser}) async {
+    setState(() {
+      _isLoading = true;
+    });
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      timeout: const Duration(seconds: 30),
+      phoneNumber: phoneUser,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {
+        // if(e.message!.contains("invalid")){
+        //   showDialog(
+        //   context: context,
+        //   builder: (context) => BuildSimpleDialog(
+        //       content: "Mã OTP không đúng",
+        //       firstButtonName: "Đóng",
+        //       onTapFuncionFirst: () {
+        //         TextButton(
+        //             onPressed: () => Navigator.pop(context),
+        //             child: Text(
+        //               "Đóng",
+        //               style: CommondText.textSize16W500,
+        //             ));
+        //       }));
+        // }
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        setState(() {
+          _isLoading = false;
+        });
+        ForgotPasswordPage.verify = verificationId;
+        Navigator.pushReplacementNamed(
+            context, RouterName.enterVerificationCodePage);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          _isLoading = false;
+        });
+      },
+    );
+  }
+
+  // _getTodoList({required int currentPage}) async {
+  //   _isLoading = currentPage == 0 ? true : false;
+  //   _isLoadMore = currentPage > 0 ? true : false;
+
+  //   Response response;
+  //   Dio dio = Dio();
+  //   response = await dio
+  //       .get('https://dummyjson.com/todos?limit=$limit&skip=$currentPage');
+
+  //   final GetTodoListResponse getTodoListResponse =
+  //       GetTodoListResponse.fromJson(response.data);
+  //   // print(response.data);
+
+  //   setState(() {
+  //     listTodo.addAll(getTodoListResponse.todos ?? []);
+  //     total = getTodoListResponse.total ?? 30;
+  //     _isLoadMore = false;
+  //     _isLoading = false;
+  //   });
+
+  //   // setState(() {
+  //   //   _isLoadMore = false;
+  //   // });
+  // }
 
   TextEditingController userController = TextEditingController();
   String userWarningText = "";
@@ -80,25 +125,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             titlle: "Quên mật khẩu",
             isLeading: true,
             isBackgroundColor: true),
-        // AppBar(
-        //   leading: GestureDetector(
-        //     onTap: () => Navigator.pop(context),
-        //     child: Icon(
-        //       Icons.arrow_back,
-        //       size: 30.s,
-        //     ),
-        //   ),
-        //   title: Text(
-        //     "Quên mật khẩu",
-        //     style: CommondText.textSize18W600White
-        //         .copyWith(fontWeight: FontWeight.w400),
-        //   ),
-        // ),
         body: RefreshIndicator(
           onRefresh: () async {
-            listTodo = [];
-            skip = 0;
-            await _getTodoList(currentPage: 0);
+            // listTodo = [];
+            // skip = 0;
+            // await _getTodoList(currentPage: 0);
           },
           child: Stack(
             children: [
@@ -121,6 +152,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           inputController: userController,
                           text: userWarningText),
                       BuildTextFormField(
+                          prefixIcon: const Icon(Icons.email),
                           textNormal: "Email hoặc số điện thoại",
                           textController: userController),
                       Gap(30.s),
@@ -155,51 +187,56 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     userWarningText =
                                         'Email hoặc số điện thoại không đúng';
                                   } else {
-                                    Navigator.pushReplacementNamed(context,
-                                        RouterName.enterVerificationCodePage);
+                                    String userPhoneNumber =
+                                        userController.text;
+                                    String convertPhoneNumber = userPhoneNumber
+                                        .substring(1, userPhoneNumber.length);
+                                    phoneInput = "+84 $convertPhoneNumber";
+                                    print(phoneInput);
+                                    requestOTP(phoneUser: phoneInput);
                                   }
                                 }
                               });
                             },
                             text: "TIẾP TỤC"),
                       ),
-                      ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) => Divider(
-                          thickness: 2.s,
-                        ),
-                        itemCount: listTodo.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(listTodo[index]?.todo ?? ""),
-                        ),
-                      ),
-                      if (_isLoadMore) const CircularProgressIndicator(),
+                      // ListView.separated(
+                      //   physics: const NeverScrollableScrollPhysics(),
+                      //   separatorBuilder: (context, index) => Divider(
+                      //     thickness: 2.s,
+                      //   ),
+                      //   itemCount: listTodo.length,
+                      //   shrinkWrap: true,
+                      //   itemBuilder: (context, index) => Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Text(listTodo[index]?.todo ?? ""),
+                      //   ),
+                      // ),
+                      // if (_isLoadMore) const CircularProgressIndicator(),
                     ],
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 16.s,
-                right: 16.s,
-                child: GestureDetector(
-                  onTap: () {
-                    controller.animateTo(0,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.fastOutSlowIn);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(14.s),
-                    decoration: const BoxDecoration(
-                        color: Colors.cyan, shape: BoxShape.circle),
-                    child: Icon(
-                      Icons.arrow_upward,
-                      size: 30.s,
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   bottom: 16.s,
+              //   right: 16.s,
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       controller.animateTo(0,
+              //           duration: const Duration(milliseconds: 400),
+              //           curve: Curves.fastOutSlowIn);
+              //     },
+              //     child: Container(
+              //       padding: EdgeInsets.all(14.s),
+              //       decoration: const BoxDecoration(
+              //           color: Colors.cyan, shape: BoxShape.circle),
+              //       child: Icon(
+              //         Icons.arrow_upward,
+              //         size: 30.s,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               if (_isLoading)
                 Container(
                     color: CommondColor.blackCommond.withOpacity(0.2),

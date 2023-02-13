@@ -138,8 +138,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           _buildFormName(),
                           BuildWarningText(
-                            inputController: userController,
-                            text: userWarningText,
+                            inputController: passwordController,
+                            text: passwordWarningText,
                           ),
                           _buildFormPassword(),
                           Gap(30.s),
