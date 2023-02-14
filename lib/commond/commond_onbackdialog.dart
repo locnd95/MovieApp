@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:movie_app/commond/commond_show_dialog.dart';
 
@@ -8,7 +10,8 @@ Future<bool> onBackDialog(BuildContext context) async {
           content: 'Bạn có muốn thoát ?',
           firstButtonName: 'Đồng ý',
           onTapFuncionFirst: () {
-            Navigator.of(context).pop(true);
+            exit(0);
+            // Navigator.of(context).pop(true);
           },
           title: 'Thông báo',
           onTapFuncionSecond: () {
