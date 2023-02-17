@@ -17,25 +17,13 @@ class BookingDateTimeOfMovie extends StatefulWidget {
   State<BookingDateTimeOfMovie> createState() => _BookingDateTimeOfMovieState();
 }
 
-// DateTime dateCallback = DateTime.now();
-
-// _dateCallback(DateTime date) {
-//   dateCallback = date;
-//   print(dateCallback);
-// }
-
 class _BookingDateTimeOfMovieState extends State<BookingDateTimeOfMovie> {
   DateTime _selectedDay = DateTime.now();
   @override
   Widget build(BuildContext context) {
     List<String> list = ["A", "B", "C", "D"];
     final data = ModalRoute.of(context)!.settings.arguments as Item;
-    // String start = data.startTime ?? "2022-12-18T18:30:42.812Z";
-    // DateTime parseTime =
-    //     DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(start);
-    // String timeStart = "${parseTime.hour}:${parseTime.minute}";
-    // String dateStart = "${parseTime.day}/${parseTime.month}";
-    // print(timeStart);
+
     String timeStart = CommondConvertDateTime()
         .getStartTime(data.startTime ?? "2022-12-18T18:30:42.812Z");
     String timeEnd = CommondConvertDateTime()
@@ -153,11 +141,6 @@ class _BookingDateTimeOfMovieState extends State<BookingDateTimeOfMovie> {
       ),
     ));
   }
-
-  // Column _buildMovieInfor(
-  //     MovieInforBooking movieInforBooking, BuildContext context, Item data) {
-  //   return
-  // }
 
   Container _buildDateTime() {
     return Container(

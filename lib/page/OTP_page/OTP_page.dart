@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:movie_app/commond/commond.dart';
 import 'package:movie_app/commond/commond_appbar.dart';
 import 'package:movie_app/commond/commond_large_elevated_button.dart';
-import 'package:movie_app/commond/commond_show_dialog.dart';
 import 'package:movie_app/commond/commond_warning_text.dart';
 import 'package:movie_app/page/forgot_password_page/forgot_password_page.dart';
 import 'package:movie_app/router/router.dart';
@@ -14,14 +13,14 @@ import 'package:sizer/sizer.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
-class EnterVerificationCode extends StatefulWidget {
-  const EnterVerificationCode({super.key});
+class OPTPage extends StatefulWidget {
+  const OPTPage({super.key});
 
   @override
-  State<EnterVerificationCode> createState() => _EnterVerificationCodeState();
+  State<OPTPage> createState() => _OPTPageState();
 }
 
-class _EnterVerificationCodeState extends State<EnterVerificationCode> {
+class _OPTPageState extends State<OPTPage> {
   TextEditingController userController = TextEditingController();
   String userWarningText = "";
   TextEditingController textEditingController = TextEditingController();
@@ -30,6 +29,35 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
   int time = 60;
   bool _isLoading = false;
   FirebaseAuth auth = FirebaseAuth.instance;
+  requestOTP({required String phoneUser}) async {
+    setState(() {
+      _isLoading = true;
+    });
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      timeout: const Duration(seconds: 30),
+      phoneNumber: phoneUser,
+      verificationCompleted: (PhoneAuthCredential credential) {
+        // setState(() {
+        //   timeController.restart();
+        // });
+      },
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) {
+        setState(() {
+          timeController.restart();
+          _isLoading = false;
+        });
+        ForgotPasswordPage.verify = verificationId;
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          // timeController.restart();
+          _isLoading = false;
+        });
+      },
+    );
+  }
+
   confirmOTP(BuildContext context) async {
     setState(() {
       _isLoading = true;
@@ -52,17 +80,35 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
       });
       showDialog(
           context: context,
-          builder: (context) => BuildSimpleDialog(
-              content: "Mã OTP không đúng",
-              firstButtonName: "Đóng",
-              onTapFuncionFirst: () {
-                TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      "Đóng",
+          builder: (context) => SimpleDialog(
+                children: [
+                  Column(children: [
+                    Text(
+                      "Mã OPT không đúng",
                       style: CommondText.textSize16W500,
-                    ));
-              }));
+                    ),
+                    TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          "Đóng",
+                          style: CommondText.textSize16W500
+                              .copyWith(color: Colors.red),
+                        ))
+                  ])
+                ],
+              )
+          // BuildSimpleDialog(
+          //     content: "Mã OTP không đúng",
+          //     firstButtonName: "Đóng",
+          //     onTapFuncionFirst: () {
+          //       TextButton(
+          //           onPressed: () => Navigator.pop(context),
+          //           child: Text(
+          //             "Đóng",
+          //             style: CommondText.textSize16W500,
+          //           ));
+          //     })
+          );
     }
   }
   // ..text = "123456";
@@ -70,12 +116,14 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
   bool isCheckOTP = false;
+
   bool hasError = false;
   String currentText = "";
   CountdownController timeController = CountdownController(autoStart: true);
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    String data = ModalRoute.of(context)!.settings.arguments as String;
     return SafeArea(
         child: Stack(
       children: [
@@ -101,7 +149,7 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
                 ),
                 _buildOTPCode(context),
                 Gap(30.s),
-                _buildElevatedButton(context),
+                _buildElevatedButton(context, data),
                 Gap(10.s),
                 _buildCountdownTime(),
                 Gap(10.s),
@@ -110,6 +158,8 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
                       onTap: () {
                         setState(() {
                           sendBack = false;
+
+                          requestOTP(phoneUser: data);
                           timeController.restart();
                         });
                       },
@@ -159,12 +209,12 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
     return Text(
       textAlign: TextAlign.center,
       maxLines: 3,
-      "Nhập mã xác minh đã được gửi đến số điện thoại 0346418055. Mỗi số điện thoại chỉ nhận được tối đa 3 mã trong 1 ngày",
+      "Nhập mã xác minh đã được gửi đến số điện thoại +84 34****055. Mỗi số điện thoại chỉ nhận được tối đa 3 mã trong 1 ngày",
       style: CommondText.textSize16W500,
     );
   }
 
-  Form _buildElevatedButton(BuildContext context) {
+  Form _buildElevatedButton(BuildContext context, String phone) {
     return Form(
       onChanged: () {
         setState(() {
@@ -176,7 +226,7 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
           notOTPtype: false,
           functionOnTap: () {
             setState(() {
-              String b = convertString("0346418055");
+              String b = convertString(phone);
               if (userController.text.isEmpty) {
                 userWarningText = "Vui lòng nhập mã OTP";
               } else {
@@ -243,6 +293,7 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
 
 String convertString(String phoneNumber) {
   String a = phoneNumber;
-  a.replaceRange(5, 8, "*****");
+  a.replaceRange(5, 8, "****");
+  print("$a");
   return a;
 }

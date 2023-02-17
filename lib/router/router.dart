@@ -9,7 +9,7 @@ import 'package:movie_app/page/cine_channel_page/cine_channel_page.dart';
 import 'package:movie_app/page/circle_content_page/circle_content_page.dart';
 import 'package:movie_app/page/confirm_pasword_to_show_user/confirm_pasword_to_show_user.dart';
 import 'package:movie_app/page/detail_content_image/detail_content_image_page.dart';
-import 'package:movie_app/page/enter_verification_code_page/enter_verification_code_page.dart';
+import 'package:movie_app/page/OTP_page/OTP_page.dart';
 import 'package:movie_app/page/forgot_password_page/forgot_password_page.dart';
 import 'package:movie_app/page/gift_voucher_coupon/gift_voucher_coupon.dart';
 import 'package:movie_app/page/history_deal/history_deal.dart';
@@ -49,9 +49,9 @@ class AppRouter {
             builder: (context) => const ForgotPasswordPage());
       case RouterName.testPage:
         return MaterialPageRoute(builder: (context) => const TestPage());
-      case RouterName.enterVerificationCodePage:
+      case RouterName.otpPage:
         return MaterialPageRoute(
-            builder: (context) => const EnterVerificationCode());
+            builder: (context) => const OPTPage(), settings: settings);
       case RouterName.detailContentImage:
         return MaterialPageRoute(
             builder: (context) => const DetailContentImage(),
@@ -146,7 +146,7 @@ class RouterName {
   static const signUpPage = "/signUpPage";
   static const forgotPasswordPage = "/forgotPasswordPage";
   static const testPage = "/testPage";
-  static const enterVerificationCodePage = "/enterVerificationCodePage";
+  static const otpPage = "/OTPPage";
   static const detailContentImage = "/detailContentImage";
   static const imax4DX = "/imax4DX";
   static const movie = "/movie";

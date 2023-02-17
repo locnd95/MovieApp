@@ -15,34 +15,16 @@ class AllVideosContents extends StatefulWidget {
 class _AllVideosContentsState extends State<AllVideosContents> {
   ScrollController controller = ScrollController();
 
-  // @override
-  // void initState() {
-  //   controller.jumpTo(400.);
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final data =
         ModalRoute.of(context)!.settings.arguments as List<ListVideosContent>;
-    // final videoURL = data[0].linkVideo;
-    // YoutubePlayerController controller;
-    // final videoID = YoutubePlayer.convertUrlToId(videoURL);
-    // controller = YoutubePlayerController(
-    //     initialVideoId: videoID!,
-    //     flags: const YoutubePlayerFlags(autoPlay: true));
-    // controller.jumpTo(data.length * 10);
+
     return RefreshIndicator(
       onRefresh: () {
         return Future.delayed(const Duration(seconds: 0));
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            controller.jumpTo(100.s);
-          },
-          child: const Icon(Icons.add),
-        ),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,

@@ -33,11 +33,9 @@ class _BookingMovieSeatState extends State<BookingMovieSeat> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print("1");
       MovieInforBooking data =
           ModalRoute.of(context)!.settings.arguments as MovieInforBooking;
       _getListSeat(filmId: data.idFirm);
-      print("2");
     });
 
     super.initState();
@@ -505,72 +503,6 @@ class _BookingMovieSeatState extends State<BookingMovieSeat> {
             listSeatCopy = [...context.read<Calculator>().listSeat];
             countCopy = context.read<Calculator>().count;
           });
-
-          // showDialog(
-          //   context: context,
-          //   builder: (context) => SimpleDialog(
-          //     contentPadding:
-          //         EdgeInsets.symmetric(horizontal: 10.s, vertical: 10.s),
-          //     titlePadding: const EdgeInsets.all(0),
-          //     title: StatefulBuilder(
-          //       builder: (context, setState) => Stack(
-          //         clipBehavior: Clip.none,
-          //         children: [
-          //           Image(
-          //               fit: BoxFit.fitHeight,
-          //               image: NetworkImage(data.linkImage)),
-          //           Positioned(
-          //               top: -15.s,
-          //               left: -15.s,
-          //               child: GestureDetector(
-          //                 onTap: () {
-          //                   setState(() {
-          //                     print("SHOWW DIALOG");
-          //                   });
-          //                   Navigator.pop(context, true);
-          //                 },
-          //                 child: Icon(
-          //                   Icons.highlight_off,
-          //                   size: 30.s,
-          //                   color: CommondColor.whiteCommond,
-          //                 ),
-          //               )),
-          //         ],
-          //       ),
-          //     ),
-          //     children: [
-          //       Column(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         children: [
-          //           Gap(10.s),
-          //           Text(
-          //             overflow: TextOverflow.ellipsis,
-          //             textAlign: TextAlign.center,
-          //             maxLines: 2,
-          //             data.nameMovie,
-          //             style: CommondText.textSize18W500Black,
-          //           ),
-          //           Gap(15.s),
-          //           BuildRowInInforTiket(
-          //             content1: data.date,
-          //             title1: 'DATE : ',
-          //             title2: 'TIME : ',
-          //             content2: data.startTime,
-          //           ),
-          //           BuildRowInInforTiket(
-          //               content1: countCopy.toString(),
-          //               title1: 'TIKET : ',
-          //               title2: 'SEAT : ',
-          //               content2: listSeatCopy.toString()),
-          //           Gap(10.s),
-          //           Image.asset("assets/images2/image_code.jpg",
-          //               width: 150.s, height: 50.s, fit: BoxFit.fill),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // );
-
         } else {
           Fluttertoast.showToast(
               msg: "Bạn chưa chọn ghế ,mời bạn chọn ghế");
@@ -643,7 +575,7 @@ class _BuildInforTiket extends StatelessWidget {
           title,
           style: TextStyle(
               color: Colors.red[800],
-              fontSize: 18.s,
+              fontSize: 16.s,
               fontWeight: FontWeight.w500),
         ),
         Text(
@@ -651,7 +583,7 @@ class _BuildInforTiket extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           content,
           style: TextStyle(
-              color: Colors.black, fontSize: 18.s, fontWeight: FontWeight.w400),
+              color: Colors.black, fontSize: 16.s, fontWeight: FontWeight.w400),
         ),
       ],
     );
