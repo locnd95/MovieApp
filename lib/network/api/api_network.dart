@@ -10,7 +10,6 @@ class CommondApi {
       String? tokenInput,
       required Function functioneError}) async {
     String token = await LocalUserCommond.getToken();
-    print("get token =$token");
 
     print("$url$endPoint");
     dio.interceptors.add(InterceptorsWrapper(onError: (e, handler) {

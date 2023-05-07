@@ -38,8 +38,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     await FirebaseAuth.instance.verifyPhoneNumber(
       timeout: const Duration(seconds: 30),
       phoneNumber: phoneUser,
-      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationCompleted: (PhoneAuthCredential credential) {
+
+      },
       verificationFailed: (FirebaseAuthException e) {
+        
         // if(e.message!.contains("invalid")){
         //   showDialog(
         //   context: context,

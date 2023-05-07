@@ -20,9 +20,9 @@ class BuildTextFormField extends StatefulWidget {
   final String? textRich;
   final Widget? iconShow;
   final Widget? iconOff;
-  Widget? prefixIcon;
-  bool readOnly;
-  bool noActive;
+  final Widget? prefixIcon;
+  final bool readOnly;
+  final bool noActive;
   bool isObscure;
   final TextEditingController textController;
   void Function()? radioFuncion;

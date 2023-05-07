@@ -40,7 +40,6 @@ class _SignUpPageState extends State<SignUpPage> {
     genderController.dispose();
     locationController.dispose();
     favoriteCeminaController.dispose();
-    print('Dispose used');
     super.dispose();
   }
 
@@ -103,7 +102,6 @@ class _SignUpPageState extends State<SignUpPage> {
             _isLoading = false;
           });
         });
-    print(response.statusCode);
     if (response.statusCode == 200 || response.statusCode == 201) {
       // onLoginSubmit(userNameInput: userNameInput, passwordInput: passwordInput);
       Fluttertoast.showToast(msg: "Đăng kí thành công");
@@ -331,8 +329,8 @@ class _SignUpPageState extends State<SignUpPage> {
               ? userWarningText = "Vui lòng nhập tên người dùng"
               : "";
 
-          const patternEmail = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-          final regExpEmail = RegExp(patternEmail);
+          // const patternEmail = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+          // final regExpEmail = RegExp(patternEmail);
           String patternPhoneNumber = r'(^(?:[+0]9)?[0-9]{10,12}$)';
           RegExp regExpPhoneNumber = RegExp(patternPhoneNumber);
           if (phoneNumberController.text.isEmpty) {
